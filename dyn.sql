@@ -1,0 +1,1253 @@
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: 14 Des 2017 pada 07.48
+-- Versi Server: 10.1.28-MariaDB
+-- PHP Version: 7.1.11
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `dyn`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_categories`
+--
+
+CREATE TABLE `tec_categories` (
+  `id` int(11) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `name` varchar(55) NOT NULL,
+  `image` varchar(100) DEFAULT 'no_image.png'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_categories`
+--
+
+INSERT INTO `tec_categories` (`id`, `code`, `name`, `image`) VALUES
+(1, '6215352163', 'Sparepart Trail', '175cee4fc8635a943941d35ae8aa3f93.jpg'),
+(2, '52635126312', 'Accessories Trail', '9f13463fb12d7a6e0ba9376a3befb898.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_combo_items`
+--
+
+CREATE TABLE `tec_combo_items` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `item_code` varchar(20) NOT NULL,
+  `quantity` decimal(12,4) NOT NULL,
+  `price` decimal(25,2) DEFAULT NULL,
+  `cost` decimal(25,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_customers`
+--
+
+CREATE TABLE `tec_customers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(55) NOT NULL,
+  `cf1` varchar(255) NOT NULL,
+  `cf2` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `store_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_customers`
+--
+
+INSERT INTO `tec_customers` (`id`, `name`, `cf1`, `cf2`, `phone`, `email`, `store_id`) VALUES
+(1, 'Walk-in Client', '', '', '012345678', 'customer@tecdiary.com', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_expenses`
+--
+
+CREATE TABLE `tec_expenses` (
+  `id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reference` varchar(50) NOT NULL,
+  `amount` decimal(25,2) NOT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `created_by` varchar(55) NOT NULL,
+  `attachment` varchar(55) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_gift_cards`
+--
+
+CREATE TABLE `tec_gift_cards` (
+  `id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `card_no` varchar(20) NOT NULL,
+  `value` decimal(25,2) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `balance` decimal(25,2) NOT NULL,
+  `expiry` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `store_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_gift_cards`
+--
+
+INSERT INTO `tec_gift_cards` (`id`, `date`, `card_no`, `value`, `customer_id`, `balance`, `expiry`, `created_by`, `store_id`) VALUES
+(1, '2017-07-25 09:10:23', '0035 8753 3506 1455', '120000.00', NULL, '120000.00', '2032-12-11', 2, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_groups`
+--
+
+CREATE TABLE `tec_groups` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_groups`
+--
+
+INSERT INTO `tec_groups` (`id`, `name`, `description`) VALUES
+(1, 'institution A', 'institution A'),
+(2, 'institution B', 'institution B'),
+(3, 'institution C', 'institution C');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_login_attempts`
+--
+
+CREATE TABLE `tec_login_attempts` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `ip_address` varbinary(16) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_login_attempts`
+--
+
+INSERT INTO `tec_login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(6, 0x3a3a31, 'admin@admin.com', 1513151119),
+(7, 0x3a3a31, 'admin@admin.com', 1513151146),
+(8, 0x3a3a31, 'admin@admin.com', 1513186887);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_payments`
+--
+
+CREATE TABLE `tec_payments` (
+  `id` int(11) NOT NULL,
+  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `sale_id` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `transaction_id` varchar(50) DEFAULT NULL,
+  `paid_by` varchar(20) NOT NULL,
+  `cheque_no` varchar(20) DEFAULT NULL,
+  `cc_no` varchar(20) DEFAULT NULL,
+  `cc_holder` varchar(25) DEFAULT NULL,
+  `cc_month` varchar(2) DEFAULT NULL,
+  `cc_year` varchar(4) DEFAULT NULL,
+  `cc_type` varchar(20) DEFAULT NULL,
+  `amount` decimal(25,2) NOT NULL,
+  `currency` varchar(3) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `attachment` varchar(55) DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `pos_paid` decimal(25,2) DEFAULT '0.00',
+  `pos_balance` decimal(25,2) DEFAULT '0.00',
+  `gc_no` varchar(20) DEFAULT NULL,
+  `reference` varchar(50) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_payments`
+--
+
+INSERT INTO `tec_payments` (`id`, `date`, `sale_id`, `customer_id`, `transaction_id`, `paid_by`, `cheque_no`, `cc_no`, `cc_holder`, `cc_month`, `cc_year`, `cc_type`, `amount`, `currency`, `created_by`, `attachment`, `note`, `pos_paid`, `pos_balance`, `gc_no`, `reference`, `updated_by`, `updated_at`, `store_id`) VALUES
+(1, '2017-07-25 07:30:41', 1, 1, NULL, 'cash', '', '', '', '', '', '', '1200000.00', NULL, 2, NULL, '', '1200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(2, '2017-07-25 08:43:03', 2, 1, NULL, 'cash', '', '', '', '', '', '', '6000000.00', NULL, 2, NULL, '', '6000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(9, '2017-07-25 14:05:50', 9, 1, NULL, 'cash', '', '', '', '', '', '', '1200000.00', NULL, 2, NULL, '', '1200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(10, '2017-07-25 16:55:49', 10, 1, NULL, 'cash', '', '', '', '', '', '', '1890000.00', NULL, 2, NULL, '', '1890000.00', '0.00', '', NULL, NULL, NULL, 1),
+(11, '2017-07-26 17:51:24', 11, 1, NULL, 'cash', '', '', '', '', '', '', '120000000.00', NULL, 2, NULL, '', '120000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(12, '2017-07-27 09:02:30', 12, 1, NULL, 'cash', '', '', '', '', '', '', '900000.00', NULL, 2, NULL, '', '900000.00', '0.00', '', NULL, NULL, NULL, 1),
+(13, '2017-07-27 09:03:29', 13, 1, NULL, 'cash', '', '', '', '', '', '', '1200000.00', NULL, 2, NULL, '', '1200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(14, '2017-07-27 09:42:50', 16, 1, NULL, 'cash', '', '', '', '', '', '', '4800000.00', NULL, 2, NULL, '', '4800000.00', '0.00', '', NULL, NULL, NULL, 1),
+(15, '2017-07-27 09:50:30', 17, 1, NULL, 'cash', '', '', '', '', '', '', '13200000.00', NULL, 2, NULL, '', '13200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(16, '2017-07-27 10:04:58', 18, 1, NULL, 'gift_card', '', '', '', '', '', '', '12000000.00', NULL, 2, NULL, '', '12000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(17, '2017-07-28 14:44:19', 19, 1, NULL, 'cash', '', '', '', '', '', '', '50000000.00', NULL, 2, NULL, '', '50000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(18, '2017-07-28 17:24:03', 20, 1, NULL, 'cash', '', '', '', '', '', '', '200000000.00', NULL, 2, NULL, '', '200000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(19, '2017-07-28 17:53:56', 21, 1, NULL, 'cash', '', '', '', '', '', '', '200000.00', NULL, 3, NULL, '', '200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(20, '2017-07-28 18:09:18', 22, 1, NULL, 'cash', '', '', '', '', '', '', '1200000.00', NULL, 3, NULL, '', '1200000.00', '0.00', '', NULL, NULL, NULL, 1),
+(21, '2017-07-29 07:53:21', 23, 1, NULL, 'cash', '', '', '', '', '', '', '18000000.00', NULL, 2, NULL, '', '18000000.00', '0.00', '', NULL, NULL, NULL, 1),
+(22, '2017-07-30 03:59:49', 24, 1, NULL, 'cash', '', '', '', '', '', '', '300000.00', NULL, 2, NULL, '', '300000.00', '0.00', '', NULL, NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_printers`
+--
+
+CREATE TABLE `tec_printers` (
+  `id` int(11) NOT NULL,
+  `title` varchar(55) NOT NULL,
+  `type` varchar(25) NOT NULL,
+  `profile` varchar(25) NOT NULL,
+  `char_per_line` tinyint(3) UNSIGNED DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `ip_address` varbinary(45) DEFAULT NULL,
+  `port` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_products`
+--
+
+CREATE TABLE `tec_products` (
+  `id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `name` char(255) NOT NULL,
+  `category_id` int(11) NOT NULL DEFAULT '1',
+  `price` varchar(50) NOT NULL,
+  `image` varchar(255) DEFAULT 'no_image.png',
+  `tax` varchar(20) DEFAULT NULL,
+  `cost` varchar(50) DEFAULT NULL,
+  `tax_method` tinyint(1) DEFAULT '1',
+  `quantity` decimal(15,2) DEFAULT '0.00',
+  `barcode_symbology` varchar(20) NOT NULL DEFAULT 'code39',
+  `type` varchar(20) NOT NULL DEFAULT 'standard',
+  `details` text,
+  `alert_quantity` decimal(10,2) DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_products`
+--
+
+INSERT INTO `tec_products` (`id`, `code`, `name`, `category_id`, `price`, `image`, `tax`, `cost`, `tax_method`, `quantity`, `barcode_symbology`, `type`, `details`, `alert_quantity`) VALUES
+(1, '88123213712399', 'USD', 1, '300000', 'da87fb7c2d399928513ad797a140ed2e.png', '0', '120000', 0, '109.00', 'code39', 'standard', '', '5.00'),
+(2, '9921321313', 'Koil', 1, '4000000', '211079e2a2d7e6c07472a605a33d77b8.png', '0', '1200000', 0, '0.00', 'code39', 'standard', '', '3.00'),
+(3, '42351362136167', 'Kenalpot Norifumi megaboom klx', 1, '300000', '0052d00c9a118ed0d68c64c26694ac67.png', '0', '120000', 0, '0.00', 'code39', 'standard', '', '10.00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_product_store_qty`
+--
+
+CREATE TABLE `tec_product_store_qty` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `store_id` int(11) NOT NULL,
+  `quantity` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `price` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_product_store_qty`
+--
+
+INSERT INTO `tec_product_store_qty` (`id`, `product_id`, `store_id`, `quantity`, `price`) VALUES
+(1, 1, 1, '8.00', 'Rp.300,000,00'),
+(2, 2, 1, '4.00', 'Rp.4,000,000,00'),
+(3, 3, 1, '1.00', '250000.00'),
+(4, 4, 1, '18.00', '120000.00'),
+(5, 5, 1, '1.00', '200000.00'),
+(6, 6, 1, '0.00', '1200000.00'),
+(7, 7, 1, '0.00', '0.00'),
+(8, 8, 1, '1000.00', '1200000.00'),
+(9, 9, 1, '1.00', '0.00'),
+(10, 10, 1, '20.00', '0.00'),
+(11, 11, 1, '10.00', '0.00'),
+(12, 12, 1, '120.00', '500000.00'),
+(13, 13, 1, '10000.00', '400000.00'),
+(14, 14, 1, '-881.00', '200000.00'),
+(15, 15, 1, '123.00', '12.32'),
+(16, 16, 1, '15.00', ''),
+(17, 1, 1, '8.00', 'Rp.300,000,00'),
+(18, 2, 1, '4.00', 'Rp.4,000,000,00'),
+(19, 3, 1, '1.00', '300000');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_purchases`
+--
+
+CREATE TABLE `tec_purchases` (
+  `id` int(11) NOT NULL,
+  `reference` varchar(55) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` varchar(1000) NOT NULL,
+  `total` varchar(50) NOT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `received` tinyint(1) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_purchases`
+--
+
+INSERT INTO `tec_purchases` (`id`, `reference`, `date`, `note`, `total`, `attachment`, `supplier_id`, `received`, `created_by`, `store_id`) VALUES
+(2, '', '2017-07-25 10:36:00', '', '2500000', '83ae95bfadfc84fc871864df882d5aba.jpg', NULL, NULL, 2, 1),
+(3, '', '2017-07-30 06:02:00', '', '120000', NULL, NULL, NULL, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_purchase_items`
+--
+
+CREATE TABLE `tec_purchase_items` (
+  `id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL,
+  `cost` decimal(25,2) NOT NULL,
+  `subtotal` decimal(25,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_purchase_items`
+--
+
+INSERT INTO `tec_purchase_items` (`id`, `purchase_id`, `product_id`, `quantity`, `cost`, `subtotal`) VALUES
+(3, 2, 1, '100.00', '25000.00', '2500000.00'),
+(4, 3, 3, '1.00', '120000.00', '120000.00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_registers`
+--
+
+CREATE TABLE `tec_registers` (
+  `id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) NOT NULL,
+  `cash_in_hand` decimal(50,0) DEFAULT NULL,
+  `status` varchar(10) NOT NULL,
+  `total_cash` decimal(50,0) DEFAULT NULL,
+  `total_cheques` decimal(11,0) DEFAULT NULL,
+  `total_cc_slips` decimal(11,0) DEFAULT NULL,
+  `total_cash_submitted` decimal(50,0) DEFAULT NULL,
+  `total_cheques_submitted` decimal(11,0) DEFAULT NULL,
+  `total_cc_slips_submitted` decimal(11,0) DEFAULT NULL,
+  `note` text,
+  `closed_at` timestamp NULL DEFAULT NULL,
+  `transfer_opened_bills` varchar(50) DEFAULT NULL,
+  `closed_by` int(11) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_registers`
+--
+
+INSERT INTO `tec_registers` (`id`, `date`, `user_id`, `cash_in_hand`, `status`, `total_cash`, `total_cheques`, `total_cc_slips`, `total_cash_submitted`, `total_cheques_submitted`, `total_cc_slips_submitted`, `note`, `closed_at`, `transfer_opened_bills`, `closed_by`, `store_id`) VALUES
+(42, '2017-07-29 07:48:30', 2, '130', 'close', '130', '0', '0', '130', '0', '0', '', '2017-07-29 07:51:03', NULL, 2, 1),
+(43, '2017-07-29 07:51:13', 2, '800000', 'close', '800000', '0', '0', '10000000', '0', '0', '', '2017-07-29 07:51:59', NULL, 2, 1),
+(44, '2017-07-29 07:52:33', 2, '3000000', 'close', '21000000', '0', '0', '21000000', '0', '0', '', '2017-07-29 07:53:29', NULL, 2, 1),
+(45, '2017-07-29 11:43:18', 2, '1200000', 'close', '1200000', '0', '0', '1200000', '0', '0', '', '2017-07-29 11:43:25', NULL, 2, 1),
+(46, '2017-07-29 11:43:57', 2, '12000000', 'close', '12000000', '0', '0', '12000000', '0', '0', '', '2017-07-29 18:14:51', NULL, 2, 1),
+(47, '2017-07-29 14:38:59', 3, '123', 'open', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(48, '2017-07-30 03:14:38', 2, '12000', 'close', '12000', '0', '0', '12000', '0', '0', '', '2017-07-30 03:21:34', NULL, 2, 1),
+(49, '2017-07-30 03:33:44', 2, '1200', 'close', '301200', '0', '0', '301200', '0', '0', '', '2017-12-13 06:31:19', '0', 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_sales`
+--
+
+CREATE TABLE `tec_sales` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(55) NOT NULL,
+  `total` decimal(25,2) NOT NULL,
+  `product_discount` decimal(25,2) DEFAULT NULL,
+  `order_discount_id` varchar(20) DEFAULT NULL,
+  `order_discount` decimal(25,2) DEFAULT NULL,
+  `total_discount` decimal(25,2) DEFAULT NULL,
+  `product_tax` decimal(25,2) DEFAULT NULL,
+  `order_tax_id` varchar(20) DEFAULT NULL,
+  `order_tax` decimal(25,2) DEFAULT NULL,
+  `total_tax` decimal(25,2) DEFAULT NULL,
+  `grand_total` decimal(25,2) NOT NULL,
+  `total_items` int(11) DEFAULT NULL,
+  `total_quantity` decimal(15,2) DEFAULT NULL,
+  `paid` decimal(25,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `rounding` decimal(8,2) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1',
+  `hold_ref` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_sales`
+--
+
+INSERT INTO `tec_sales` (`id`, `date`, `customer_id`, `customer_name`, `total`, `product_discount`, `order_discount_id`, `order_discount`, `total_discount`, `product_tax`, `order_tax_id`, `order_tax`, `total_tax`, `grand_total`, `total_items`, `total_quantity`, `paid`, `created_by`, `updated_by`, `updated_at`, `note`, `status`, `rounding`, `store_id`, `hold_ref`) VALUES
+(1, '2017-07-25 14:30:41', 1, 'Walk-in Client', '1200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1200000.00', 1, '1.00', '1200000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(2, '2017-07-25 15:43:03', 1, 'Walk-in Client', '6000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '6000000.00', 1, '5.00', '6000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(9, '2017-07-25 21:05:50', 1, 'Walk-in Client', '1200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1200000.00', 1, '1.00', '1200000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(10, '2017-07-25 23:55:49', 1, 'Walk-in Client', '1890000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1890000.00', 5, '5.00', '1890000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(11, '2017-07-27 00:51:24', 1, 'Walk-in Client', '120000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '120000000.00', 1, '100.00', '120000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(12, '2017-07-27 16:02:30', 1, 'Walk-in Client', '900000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '900000.00', 1, '1.00', '900000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(13, '2017-07-27 16:03:29', 1, 'Walk-in Client', '1200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1200000.00', 1, '1.00', '1200000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(14, '2017-07-27 16:06:29', 1, 'Walk-in Client', '1200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1200000.00', 1, '1.00', '0.00', 2, NULL, NULL, '', 'due', '0.00', 1, ''),
+(16, '2017-07-27 16:42:50', 1, 'Walk-in Client', '4800000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '4800000.00', 1, '4.00', '4800000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(17, '2017-07-27 16:50:30', 1, 'Walk-in Client', '13200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '13200000.00', 1, '11.00', '13200000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(18, '2017-07-27 17:04:58', 1, 'Walk-in Client', '12000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '12000000.00', 1, '10.00', '12000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(19, '2017-07-28 21:44:19', 1, 'Walk-in Client', '50000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '50000000.00', 1, '100.00', '50000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(20, '2017-07-29 00:24:03', 1, 'Walk-in Client', '200000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '200000000.00', 1, '1000.00', '200000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(21, '2017-07-29 00:53:56', 1, 'Walk-in Client', '200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '200000.00', 1, '1.00', '200000.00', 3, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(22, '2017-07-29 01:09:18', 1, 'Walk-in Client', '1200000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '1200000.00', 1, '1.00', '1200000.00', 3, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(23, '2017-07-29 14:53:21', 1, 'Walk-in Client', '18000000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '18000000.00', 1, '2.00', '18000000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(24, '2017-07-30 10:59:49', 1, 'Walk-in Client', '300000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '300000.00', 1, '1.00', '300000.00', 2, NULL, NULL, '', 'paid', '0.00', 1, ''),
+(25, '2017-07-30 13:23:48', 1, 'Walk-in Client', '4550000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '4550000.00', 3, '3.00', '0.00', 2, 2, '2017-07-30 13:24:26', '', 'due', '0.00', 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_sale_items`
+--
+
+CREATE TABLE `tec_sale_items` (
+  `id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL,
+  `unit_price` decimal(25,2) NOT NULL,
+  `net_unit_price` decimal(25,2) NOT NULL,
+  `discount` varchar(20) DEFAULT NULL,
+  `item_discount` decimal(25,2) DEFAULT NULL,
+  `tax` int(20) DEFAULT NULL,
+  `item_tax` decimal(25,2) DEFAULT NULL,
+  `subtotal` decimal(25,2) NOT NULL,
+  `real_unit_price` decimal(25,2) DEFAULT NULL,
+  `cost` decimal(25,2) DEFAULT '0.00',
+  `product_code` varchar(50) DEFAULT NULL,
+  `product_name` varchar(50) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_sale_items`
+--
+
+INSERT INTO `tec_sale_items` (`id`, `sale_id`, `product_id`, `quantity`, `unit_price`, `net_unit_price`, `discount`, `item_discount`, `tax`, `item_tax`, `subtotal`, `real_unit_price`, `cost`, `product_code`, `product_name`, `comment`) VALUES
+(1, 1, 1, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '25000.00', '6625362153111', 'lenovo', ''),
+(2, 2, 1, '5.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '6000000.00', '1200000.00', '25000.00', '6625362153111', 'lenovo', ''),
+(9, 9, 1, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '25000.00', '6625362153111', 'lenovo', ''),
+(10, 10, 2, '1.00', '120000.00', '120000.00', '0', '0.00', 0, '0.00', '120000.00', '120000.00', '30000.00', '621536215321368', 'jari-jari tdr', ''),
+(11, 10, 3, '1.00', '250000.00', '250000.00', '0', '0.00', 0, '0.00', '250000.00', '250000.00', '25000.00', '6215362153312', 'Hydro Bag', ''),
+(12, 10, 4, '1.00', '120000.00', '120000.00', '0', '0.00', 0, '0.00', '120000.00', '120000.00', '4000.00', '2653215312537', 'head lamp polis spot', ''),
+(13, 10, 5, '1.00', '200000.00', '200000.00', '0', '0.00', 0, '0.00', '200000.00', '200000.00', '1000.00', '662536213213', 'jok ts', ''),
+(14, 10, 6, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '50000.00', '5512342134144', 'goggle lee', ''),
+(15, 11, 7, '100.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '120000000.00', '1200000.00', '120000.00', '9123762136666661', 'lenovo', ''),
+(16, 12, 7, '1.00', '900000.00', '900000.00', '0', '0.00', 0, '0.00', '900000.00', '900000.00', '0.00', '9123762136', 'lenovo', ''),
+(17, 13, 11, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '1200000.00', '7712321377771', 'serena', ''),
+(18, 14, 11, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '1200000.00', '7712321377771', 'serena', ''),
+(20, 16, 11, '4.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '4800000.00', '1200000.00', '1200000.00', '7712321377771', 'serena', ''),
+(21, 17, 11, '11.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '13200000.00', '1200000.00', '1200000.00', '7712321377771', 'serena', ''),
+(22, 18, 11, '10.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '12000000.00', '1200000.00', '1200000.00', '7712321377771', 'serena', ''),
+(23, 19, 12, '100.00', '500000.00', '500000.00', '0', '0.00', 0, '0.00', '50000000.00', '500000.00', '12000.00', '5526321377777', 'lenovo', ''),
+(24, 20, 14, '1000.00', '200000.00', '200000.00', '0', '0.00', 0, '0.00', '200000000.00', '200000.00', '120000.00', '123231199911', 'joko', ''),
+(25, 21, 14, '1.00', '200000.00', '200000.00', '0', '0.00', 0, '0.00', '200000.00', '200000.00', '120000.00', '123231199911', 'joko', ''),
+(26, 22, 0, '1.00', '1200000.00', '1200000.00', '0', '0.00', 0, '0.00', '1200000.00', '1200000.00', '0.00', '9726 5573 0633 8417', 'Gift Card', ''),
+(27, 23, 16, '2.00', '9000000.00', '9000000.00', '0', '0.00', 0, '0.00', '18000000.00', '9000000.00', '1200000.00', '772321388921', 'joko', ''),
+(28, 24, 1, '1.00', '300000.00', '300000.00', '0', '0.00', 0, '0.00', '300000.00', '300000.00', '120000.00', '88123213712399', 'USD', ''),
+(32, 25, 1, '1.00', '300000.00', '300000.00', '0', '0.00', 0, '0.00', '300000.00', '300000.00', '120000.00', '88123213712399', 'USD', ''),
+(33, 25, 2, '1.00', '4000000.00', '4000000.00', '0', '0.00', 0, '0.00', '4000000.00', '4000000.00', '1200000.00', '9921321313', 'Koil', ''),
+(34, 25, 3, '1.00', '250000.00', '250000.00', '0', '0.00', 0, '0.00', '250000.00', '250000.00', '120000.00', '42351362136167', 'Kenalpot Norifumi megaboom klx', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_sessions`
+--
+
+CREATE TABLE `tec_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `data` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_sessions`
+--
+
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
+('0gbjlfppatugdb83cfpogcu1n7i85507', '::1', 1513173700, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137333730303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('0ith83mm861koqgcarda26p98nue78qc', '::1', 1513220212, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333232303231323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135393239223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('0nscp8ujcbn5mhin43t8qu4j5pn5gugq', '::1', 1513233043, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333233323934313b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323238323036223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('0vj9oimre0n13a7pnda49q6v5nh4fjip', '::1', 1513215393, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231353339333b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323132363230223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('10e2qpaepgfol032t62ekbul334ajfbt', '::1', 1513183700, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138333730303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b72656769737465725f69647c733a323a223437223b636173685f696e5f68616e647c733a333a22313233223b72656769737465725f6f70656e5f74696d657c733a31393a22323031372d30372d32392032313a33383a3539223b),
+('1k2fcos18edtmts5hvu15ik07vclp82p', '::1', 1513218640, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231383634303b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135303631223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('2i66moh77qgdoca4da22iu0tkv6qe3ge', '::1', 1513172880, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137323838303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('30akjdqm4vcdm6jguier7j9shmorlcas', '::1', 1513214541, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231343534313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837313635223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('3dj4taefj6hfp6ro6v4n6ol0f35d8v2l', '::1', 1513190246, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333139303234363b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837313133223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b6d6573736167657c733a33373a223c703e596f7520617265207375636365737366756c6c79206c6f6767656420696e3c2f703e223b5f5f63695f766172737c613a313a7b733a373a226d657373616765223b733a333a226f6c64223b7d),
+('3q29ch66q517evia3nbfll31r3daptbk', '::1', 1513168566, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136383536363b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b6d6573736167657c733a33353a223c703e4163636f756e74207375636365737366756c6c7920637265617465643c2f703e223b5f5f63695f766172737c613a313a7b733a373a226d657373616765223b733a333a226f6c64223b7d),
+('4796hd3ve4n7cc4or4t1esacaph66isa', '::1', 1513167562, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136373536323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('47lu83ff252js2qhd4g5u0itfcvneuth', '::1', 1513174164, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137343136343b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('54gg0ncrlr2i71i99jrsags880e99nan', '::1', 1513214931, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231343933313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323133363138223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('5atkbooh9bp29iulk84gn4ou5qb73v00', '::1', 1513228381, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333232383330313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323237383739223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('6ik1r98a7bio7q2f92b8t1k7mmebat1a', '::1', 1513187466, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138373436363b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837303633223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('6nqcss9090bl3bs880dcqc1nr7gs8f7f', '::1', 1513180611, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138303631313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313633313836223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('6qc6b359br5c03dl572i5t6m2sr8jq4c', '::1', 1513180945, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138303934353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313633313836223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('7a8qffhf0b3dfe2ueo87vr4cnp0qeqm0', '::1', 1513233885, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333233333838353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323333343637223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('8vn1aqrupk8dupm1es18inmvhautt2bn', '::1', 1513233959, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333233333838353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323333343637223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('a0mrijecka3q7l5esosrb399d0bjur1m', '::1', 1513219280, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231393238303b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135303631223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('atl4kv1lnbi651jp1k9fdd3437h8s6s8', '::1', 1513182493, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138323439333b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313831383636223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('bd4j6q25b200vedkcrsdq3u5vbc4dn90', '::1', 1513176092, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137363039323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313633313836223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b6d6573736167657c733a33373a223c703e596f7520617265207375636365737366756c6c79206c6f6767656420696e3c2f703e223b5f5f63695f766172737c613a313a7b733a373a226d657373616765223b733a333a226f6c64223b7d),
+('bhgp3vibvka319vt3cm3slkr71uh6hak', '::1', 1513169455, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136393435353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('btb7lct3lkgofim0i04ht0t2qmgedm2k', '::1', 1513184875, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138343837353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('dhs3n9fqgfc45dun660bgsrukp40gtmu', '::1', 1513190974, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333139303934313b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837313133223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('dmgv2st7fpqbl3i63virpd6hk57ib9b2', '::1', 1513213435, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231333433353b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313839323736223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('f4mcgvia3lfurcn50ogccdlronli5hao', '::1', 1513185669, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138353636393b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('fc94ofe792qisrtja45pubahjr0kbbia', '::1', 1513186538, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138363533383b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('fffu8b6kpipnfg2129jhg7fppsunk1jh', '::1', 1513219884, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231393838343b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135303631223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('g1lg0jmskjfneo5brcmvrq3nffat51r1', '::1', 1513188004, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138383030343b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837303633223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('ga24laf2rnv259473tdr30nhcuqdgn3g', '::1', 1513186863, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138363836333b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('ggoea5d328q05qlkmd6r47jlqoqdfsg2', '::1', 1513218016, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231383031363b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135303631223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b6d6573736167657c733a33373a223c703e596f7520617265207375636365737366756c6c79206c6f6767656420696e3c2f703e223b5f5f63695f766172737c613a313a7b733a373a226d657373616765223b733a333a226f6c64223b7d),
+('gpdj502nhubev2c11n3t8hfuoflfjrv7', '::1', 1513186204, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138363230343b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('h1t4usqqo8u5huos4ha1ocp2a5jn8hj0', '::1', 1513176745, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137363734353b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313633313836223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('hucfvv9bine3b6kkscm14s1lbvn6srsh', '::1', 1513190941, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333139303934313b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837313133223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('i8lrbav79qsnsviic04q10ed8nleef49', '::1', 1513169807, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136393830373b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('j35pau9fabm12ine0t8vikkgp0dol59k', '::1', 1513184204, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138343230343b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b72656769737465725f69647c733a323a223437223b636173685f696e5f68616e647c733a333a22313233223b72656769737465725f6f70656e5f74696d657c733a31393a22323031372d30372d32392032313a33383a3539223b),
+('jbtb2ms40qt1v8gikfrgjkeoc3l50dat', '::1', 1513228186, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333232383138363b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323237363231223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('jrveptj48kl5ua2fq6bt92kcpdohggjv', '::1', 1513174478, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137343437383b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('js2u9arahl6hrdhhmdah9qnu7pn69j3v', '::1', 1513220231, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333232303231323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135393239223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('k7gekue5oond3nck9ecsfj35pfanbr0c', '::1', 1513167231, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136373233313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('la3sc34eb7q3rcbhkd8l5rr6qrmon2pb', '::1', 1513181851, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138313835313b6964656e746974797c733a31383a2261646d696e4074656364696172792e636f6d223b757365726e616d657c733a353a2261646d696e223b656d61696c7c733a31383a2261646d696e4074656364696172792e636f6d223b757365725f69647c733a313a2231223b66697273745f6e616d657c733a353a2241646d696e223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22546875203235204a756e20323031352031303a353920414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313734393032223b6c6173745f69707c733a333a223a3a31223b6176617461727c4e3b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2233223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b5f5f63695f766172737c613a313a7b733a373a227761726e696e67223b733a333a226f6c64223b7d7761726e696e677c733a36353a224163636573732044656e6965642120596f7520646f6e2774206861766520726967687420746f20616363657373207468652072657175657374656420706167652e223b),
+('ljf2rl9t1t2c3qvop86spm2ehhlcsaat', '::1', 1513216231, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333231363233313b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323135363533223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('mvqt0vhn8sru7jhies2vgnd5o0ls6lgu', '::1', 1513169148, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136393134383b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('o4l276j35nrmfc3soaj57lv8nc5f0stc', '::1', 1513184540, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138343534303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('ofp3de79b5647u70v2ii2r7ulvvf0r0c', '::1', 1513233566, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333233333436323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133323238333037223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('q2maqlkf7tmfeu3prmmjuvrg21jr2n89', '::1', 1513189048, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138393034383b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837303633223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('qirfl219vsgfnciiljd908hqo9jqbp3q', '::1', 1513173397, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137333339373b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('rucrqtra43th2te1smb2kmkfompsjif2', '::1', 1513188630, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138383633303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313837303633223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('s2hpsqldfmar6rmbpn3cp5qg93q2mu9h', '::1', 1513174844, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333137343834343b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('sej19hpfq4cguq3lcqtclng91mdrs3d9', '::1', 1513168252, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333136383235323b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313632393034223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b),
+('trvkag0jb8fst9ujn3t9n01it9hhhubr', '::1', 1513183240, 0x5f5f63695f6c6173745f726567656e65726174657c693a313531333138333234303b6964656e746974797c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365726e616d657c733a31323a22696661746875726f686d616e223b656d61696c7c733a32363a22666174757261686d616e2e696c68616d40676d61696c2e636f6d223b757365725f69647c733a313a2232223b66697273745f6e616d657c733a363a22537570657220223b6c6173745f6e616d657c733a353a2241646d696e223b637265617465645f6f6e7c733a32343a22547565203235204a756c20323031372030313a333420414d223b6f6c645f6c6173745f6c6f67696e7c733a31303a2231353133313832303733223b6c6173745f69707c733a333a223a3a31223b6176617461727c733a33363a2236663337393437346130633639363461613362623739623861643931663536342e706e67223b67656e6465727c733a343a226d616c65223b67726f75705f69647c733a313a2231223b73746f72655f69647c733a313a2231223b6861735f73746f72655f69647c733a313a2231223b72656769737465725f69647c733a323a223437223b636173685f696e5f68616e647c733a333a22313233223b72656769737465725f6f70656e5f74696d657c733a31393a22323031372d30372d32392032313a33383a3539223b);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_settings`
+--
+
+CREATE TABLE `tec_settings` (
+  `setting_id` int(1) NOT NULL,
+  `logo` varchar(255) NOT NULL,
+  `site_name` varchar(55) NOT NULL,
+  `tel` varchar(20) NOT NULL,
+  `dateformat` varchar(20) DEFAULT NULL,
+  `timeformat` varchar(20) DEFAULT NULL,
+  `default_email` varchar(100) NOT NULL,
+  `language` varchar(20) NOT NULL,
+  `version` varchar(5) NOT NULL DEFAULT '1.0',
+  `theme` varchar(20) NOT NULL,
+  `timezone` varchar(255) NOT NULL DEFAULT '0',
+  `protocol` varchar(20) NOT NULL DEFAULT 'mail',
+  `smtp_host` varchar(255) DEFAULT NULL,
+  `smtp_user` varchar(100) DEFAULT NULL,
+  `smtp_pass` varchar(255) DEFAULT NULL,
+  `smtp_port` varchar(10) DEFAULT '25',
+  `smtp_crypto` varchar(5) DEFAULT NULL,
+  `mmode` tinyint(1) NOT NULL,
+  `captcha` tinyint(1) NOT NULL DEFAULT '1',
+  `mailpath` varchar(55) DEFAULT NULL,
+  `currency_prefix` varchar(3) NOT NULL,
+  `default_customer` int(11) NOT NULL,
+  `default_tax_rate` varchar(20) NOT NULL,
+  `rows_per_page` int(2) NOT NULL,
+  `total_rows` int(2) NOT NULL,
+  `header` varchar(1000) NOT NULL,
+  `footer` varchar(1000) NOT NULL,
+  `bsty` tinyint(4) NOT NULL,
+  `display_kb` tinyint(4) NOT NULL,
+  `default_category` int(11) NOT NULL,
+  `default_discount` varchar(20) NOT NULL,
+  `item_addition` tinyint(1) NOT NULL,
+  `barcode_symbology` varchar(55) NOT NULL,
+  `pro_limit` tinyint(4) NOT NULL,
+  `decimals` tinyint(1) NOT NULL,
+  `thousands_sep` varchar(2) NOT NULL DEFAULT ',',
+  `decimals_sep` varchar(2) NOT NULL DEFAULT '.',
+  `focus_add_item` varchar(55) DEFAULT NULL,
+  `add_customer` varchar(55) DEFAULT NULL,
+  `toggle_category_slider` varchar(55) DEFAULT NULL,
+  `cancel_sale` varchar(55) DEFAULT NULL,
+  `suspend_sale` varchar(55) DEFAULT NULL,
+  `print_order` varchar(55) DEFAULT NULL,
+  `print_bill` varchar(55) DEFAULT NULL,
+  `finalize_sale` varchar(55) DEFAULT NULL,
+  `today_sale` varchar(55) DEFAULT NULL,
+  `open_hold_bills` varchar(55) DEFAULT NULL,
+  `close_register` varchar(55) DEFAULT NULL,
+  `java_applet` tinyint(1) NOT NULL,
+  `receipt_printer` varchar(55) DEFAULT NULL,
+  `pos_printers` varchar(255) DEFAULT NULL,
+  `cash_drawer_codes` varchar(55) DEFAULT NULL,
+  `char_per_line` tinyint(4) DEFAULT '42',
+  `rounding` tinyint(1) DEFAULT '0',
+  `pin_code` varchar(20) DEFAULT NULL,
+  `stripe` tinyint(1) DEFAULT NULL,
+  `stripe_secret_key` varchar(100) DEFAULT NULL,
+  `stripe_publishable_key` varchar(100) DEFAULT NULL,
+  `purchase_code` varchar(100) DEFAULT NULL,
+  `envato_username` varchar(50) DEFAULT NULL,
+  `theme_style` varchar(25) DEFAULT 'green',
+  `after_sale_page` tinyint(1) DEFAULT NULL,
+  `overselling` tinyint(1) DEFAULT '1',
+  `multi_store` tinyint(1) DEFAULT NULL,
+  `qty_decimals` tinyint(1) DEFAULT '2',
+  `symbol` varchar(55) DEFAULT NULL,
+  `sac` tinyint(1) DEFAULT '0',
+  `display_symbol` tinyint(1) DEFAULT NULL,
+  `remote_printing` tinyint(1) DEFAULT '1',
+  `printer` int(11) DEFAULT NULL,
+  `order_printers` varchar(55) DEFAULT NULL,
+  `auto_print` tinyint(1) DEFAULT '0',
+  `local_printers` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_settings`
+--
+
+INSERT INTO `tec_settings` (`setting_id`, `logo`, `site_name`, `tel`, `dateformat`, `timeformat`, `default_email`, `language`, `version`, `theme`, `timezone`, `protocol`, `smtp_host`, `smtp_user`, `smtp_pass`, `smtp_port`, `smtp_crypto`, `mmode`, `captcha`, `mailpath`, `currency_prefix`, `default_customer`, `default_tax_rate`, `rows_per_page`, `total_rows`, `header`, `footer`, `bsty`, `display_kb`, `default_category`, `default_discount`, `item_addition`, `barcode_symbology`, `pro_limit`, `decimals`, `thousands_sep`, `decimals_sep`, `focus_add_item`, `add_customer`, `toggle_category_slider`, `cancel_sale`, `suspend_sale`, `print_order`, `print_bill`, `finalize_sale`, `today_sale`, `open_hold_bills`, `close_register`, `java_applet`, `receipt_printer`, `pos_printers`, `cash_drawer_codes`, `char_per_line`, `rounding`, `pin_code`, `stripe`, `stripe_secret_key`, `stripe_publishable_key`, `purchase_code`, `envato_username`, `theme_style`, `after_sale_page`, `overselling`, `multi_store`, `qty_decimals`, `symbol`, `sac`, `display_symbol`, `remote_printing`, `printer`, `order_printers`, `auto_print`, `local_printers`) VALUES
+(1, 'VR4812.png', 'Variasi48', '081394123401', 'D j M Y', 'h:i A', 'faturahman.ilham@gmail.com', 'english', '4.0.9', 'default', 'Asia/Kuala_Lumpur', 'mail', 'pop.gmail.com', 'noreply@spos.tecdiary.my', '', '25', '', 0, 0, NULL, 'IDR', 1, '0%', 25, 30, '', '', 2, 0, 1, '0', 1, '', 10, 2, ',', ',', 'ALT+F1', 'ALT+F2', 'ALT+F10', 'ALT+F5', 'ALT+F6', 'ALT+F11', 'ALT+F12', 'ALT+F8', 'Ctrl+F1', 'Ctrl+F2', 'ALT+F7', 0, NULL, NULL, '\\x1c77123213888213', 42, 4, 'boill300394', 0, 'sk_test_jHf4cEzAYtgcXvgWPCsQAn50', 'pk_test_beat8SWPORb0OVdF2H77A7uG', 'cb036771-3c08-4c1c-a028-78355d9abd6f', 'sumintar', 'yellow-light', 0, 0, 0, 2, 'Rp.', 0, 1, 1, NULL, 'null', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_stores`
+--
+
+CREATE TABLE `tec_stores` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `logo` varchar(40) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) NOT NULL,
+  `address1` varchar(50) DEFAULT NULL,
+  `address2` varchar(50) DEFAULT NULL,
+  `city` varchar(20) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  `postal_code` varchar(8) DEFAULT NULL,
+  `country` varchar(25) DEFAULT NULL,
+  `currency_code` varchar(3) NOT NULL,
+  `receipt_header` text,
+  `receipt_footer` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_stores`
+--
+
+INSERT INTO `tec_stores` (`id`, `name`, `code`, `logo`, `email`, `phone`, `address1`, `address2`, `city`, `state`, `postal_code`, `country`, `currency_code`, `receipt_header`, `receipt_footer`) VALUES
+(1, 'Variasi48', 'POS', '99692db88f8faee0bfc63fa26774a9f1.png', 'faturahman.ilham@gmail.com', '081394123401', 'JL.Melong Asih No.43', '', 'Cimahi', 'Bandung', '40531', 'Indonesia', 'MYR', '', 'This is receipt footer for store');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_suppliers`
+--
+
+CREATE TABLE `tec_suppliers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(55) NOT NULL,
+  `cf1` varchar(255) NOT NULL,
+  `cf2` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_suppliers`
+--
+
+INSERT INTO `tec_suppliers` (`id`, `name`, `cf1`, `cf2`, `phone`, `email`) VALUES
+(1, 'Test Supplier', '1', '2', '0123456789', 'supplier@tecdairy.com');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_suspended_items`
+--
+
+CREATE TABLE `tec_suspended_items` (
+  `id` int(11) NOT NULL,
+  `suspend_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL,
+  `unit_price` decimal(25,2) NOT NULL,
+  `net_unit_price` decimal(25,2) NOT NULL,
+  `discount` varchar(20) DEFAULT NULL,
+  `item_discount` decimal(25,2) DEFAULT NULL,
+  `tax` int(20) DEFAULT NULL,
+  `item_tax` decimal(25,2) DEFAULT NULL,
+  `subtotal` decimal(25,2) NOT NULL,
+  `real_unit_price` decimal(25,2) DEFAULT NULL,
+  `product_code` varchar(50) DEFAULT NULL,
+  `product_name` varchar(50) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_suspended_items`
+--
+
+INSERT INTO `tec_suspended_items` (`id`, `suspend_id`, `product_id`, `quantity`, `unit_price`, `net_unit_price`, `discount`, `item_discount`, `tax`, `item_tax`, `subtotal`, `real_unit_price`, `product_code`, `product_name`, `comment`) VALUES
+(1, 1, 3, '1.00', '250000.00', '250000.00', '0', '0.00', 0, '0.00', '250000.00', '250000.00', '42351362136167', 'Kenalpot Norifumi megaboom klx', ''),
+(1, 1, 3, '1.00', '250000.00', '250000.00', '0', '0.00', 0, '0.00', '250000.00', '250000.00', '42351362136167', 'Kenalpot Norifumi megaboom klx', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_suspended_sales`
+--
+
+CREATE TABLE `tec_suspended_sales` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(55) NOT NULL,
+  `total` decimal(25,2) NOT NULL,
+  `product_discount` decimal(25,2) DEFAULT NULL,
+  `order_discount_id` varchar(20) DEFAULT NULL,
+  `order_discount` decimal(25,2) DEFAULT NULL,
+  `total_discount` decimal(25,2) DEFAULT NULL,
+  `product_tax` decimal(25,2) DEFAULT NULL,
+  `order_tax_id` varchar(20) DEFAULT NULL,
+  `order_tax` decimal(25,2) DEFAULT NULL,
+  `total_tax` decimal(25,2) DEFAULT NULL,
+  `grand_total` decimal(25,2) NOT NULL,
+  `total_items` int(11) DEFAULT NULL,
+  `total_quantity` decimal(15,2) DEFAULT NULL,
+  `paid` decimal(25,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `hold_ref` varchar(255) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_suspended_sales`
+--
+
+INSERT INTO `tec_suspended_sales` (`id`, `date`, `customer_id`, `customer_name`, `total`, `product_discount`, `order_discount_id`, `order_discount`, `total_discount`, `product_tax`, `order_tax_id`, `order_tax`, `total_tax`, `grand_total`, `total_items`, `total_quantity`, `paid`, `created_by`, `updated_by`, `updated_at`, `note`, `hold_ref`, `store_id`) VALUES
+(1, '2017-07-30 12:28:34', 1, 'Walk-in Client', '250000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '250000.00', 1, '1.00', '0.00', 2, NULL, NULL, '', 'nanti', 1),
+(1, '2017-07-30 12:28:34', 1, 'Walk-in Client', '250000.00', '0.00', NULL, '0.00', '0.00', '0.00', '0%', '0.00', '0.00', '250000.00', 1, '1.00', '0.00', 2, NULL, NULL, '', 'nanti', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_users`
+--
+
+CREATE TABLE `tec_users` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `last_ip_address` varbinary(45) DEFAULT NULL,
+  `ip_address` varbinary(45) DEFAULT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `salt` varchar(40) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) UNSIGNED DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) UNSIGNED NOT NULL,
+  `last_login` int(11) UNSIGNED DEFAULT NULL,
+  `active` tinyint(1) UNSIGNED DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `avatar` varchar(55) DEFAULT NULL,
+  `gender` varchar(20) DEFAULT NULL,
+  `group_id` int(11) UNSIGNED NOT NULL DEFAULT '2',
+  `store_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_users`
+--
+
+INSERT INTO `tec_users` (`id`, `last_ip_address`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `avatar`, `gender`, `group_id`, `store_id`) VALUES
+(1, 0x3a3a31, 0x3132372e302e302e31, 'admin', 'c5f4583f8d61020eb0afdf68d20fad1c3bbec105', NULL, 'admin@tecdiary.com', NULL, NULL, NULL, '440679ea850db6d94a306afa1a9777b9236e6de0', 1435204774, 1513233371, 1, 'Admin', 'Admin', 'Tecdiary', '012345678', NULL, 'male', 3, 1),
+(2, 0x3a3a31, 0x3a3a31, 'ifathurohman', '47134ee9c39088ece0cb53a5e674424a0fee967b', NULL, 'faturahman.ilham@gmail.com', NULL, NULL, NULL, '517dc6cba22141e9a10ca295f7c26cd0f0b40a89', 1500921241, 1513233586, 1, 'Super ', 'Admin', NULL, '085748456784', '6f379474a0c6964aa3bb79b8ad91f564.png', 'male', 1, 1),
+(3, 0x3a3a31, 0x3a3a31, 'astuti30', 'aab858889b5b9007c5740c8694ad9ace2698ff13', NULL, 'astuti30@gmail.com', NULL, 'eb2748ff803f942c63567eb6194763338da7d913', 1501384115, '9aaac47235e441ffee1155b8ff7a542ecf7b8b36', 1501048171, 1513215720, 1, 'astuti', '30', NULL, '081394123401', NULL, 'male', 2, 1),
+(4, NULL, 0x3a3a31, 'lisa', '00478c9ac0e4363920b2b9a5f7913e70b64b74e2', NULL, 'lisa@gmail.com', NULL, NULL, NULL, NULL, 1513168506, 1513168506, 1, 'lisa', 'wati', NULL, '089213652131', NULL, 'female', 1, 1),
+(5, NULL, 0x3a3a31, 'joko12', 'cc5ffe75aa8d23fd061808aace383191356c4c31', NULL, 'joko@gmail.com', NULL, NULL, NULL, NULL, 1513168623, 1513168623, 1, 'joko', 'susanto', NULL, '087424132466', NULL, 'male', 1, 1),
+(7, NULL, 0x3a3a31, 'wulan123', 'c1dba0a25e22947e4d4e22de8bb09714e34cee29', NULL, 'wulan123@gmail.com', NULL, NULL, NULL, NULL, 1513169149, 1513169149, 1, 'wulan', 'gurita', NULL, '085223125521', NULL, 'female', 2, 1),
+(8, NULL, 0x3a3a31, 'hadi123', '7f93df76a6b20247f0744c8f7c37d8f8555bfcbe', NULL, 'hadi123@gmail.com', NULL, NULL, NULL, NULL, 1513169531, 1513169531, 1, 'hadi', 'murwadi', NULL, '087432135611', NULL, 'male', 2, 1),
+(9, NULL, 0x3a3a31, 'rahmat123', '8ddbb3f8c19623a0ab475a48d88bf60d7d22b59c', NULL, 'rahmat123@gmail.com', NULL, NULL, NULL, NULL, 1513169630, 1513169630, 1, 'rahmat', 'murwoso', NULL, '081345234623', NULL, 'male', 3, 1),
+(10, NULL, 0x3a3a31, 'edi123', '463fbf0fabaa602b9b79787cafabe95aa1d2290f', NULL, 'edi123@gmail.com', NULL, NULL, NULL, NULL, 1513169715, 1513169715, 1, 'edi', 'sasono', NULL, '085787621341', NULL, 'male', 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tec_user_logins`
+--
+
+CREATE TABLE `tec_user_logins` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `ip_address` varbinary(16) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tec_user_logins`
+--
+
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES
+(1, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-07-24 18:03:20'),
+(2, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-07-24 18:26:31'),
+(3, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:43:08'),
+(4, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:44:13'),
+(5, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:53:05'),
+(6, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:53:57'),
+(7, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:54:06'),
+(8, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:54:16'),
+(9, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-07-24 18:54:30'),
+(10, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 18:55:16'),
+(11, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-07-24 18:55:31'),
+(12, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 19:22:12'),
+(13, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 19:58:27'),
+(14, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 19:59:28'),
+(15, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 20:11:49'),
+(16, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 20:12:24'),
+(17, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 20:19:05'),
+(18, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 20:25:48'),
+(19, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-24 21:01:15'),
+(20, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-25 05:58:19'),
+(21, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-25 08:12:14'),
+(22, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-25 12:09:04'),
+(23, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-25 14:01:14'),
+(24, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-25 14:04:58'),
+(25, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-26 05:43:43'),
+(26, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-26 05:45:57'),
+(27, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-26 05:47:51'),
+(28, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-26 17:16:38'),
+(29, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 06:14:03'),
+(30, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 10:10:33'),
+(31, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 10:56:29'),
+(32, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 12:50:25'),
+(33, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 17:11:21'),
+(34, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 17:12:03'),
+(35, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-27 17:12:36'),
+(36, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 07:29:09'),
+(37, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 11:15:18'),
+(38, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 14:25:34'),
+(39, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-07-28 17:53:36'),
+(40, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 18:04:49'),
+(41, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 18:07:03'),
+(42, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-07-28 18:08:26'),
+(43, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 18:12:18'),
+(44, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 19:31:16'),
+(45, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-28 20:28:34'),
+(46, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 02:34:11'),
+(47, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 05:41:56'),
+(48, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 12:01:15'),
+(49, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 12:13:41'),
+(50, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 12:19:57'),
+(51, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 13:15:05'),
+(52, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-07-29 14:30:12'),
+(53, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-07-29 14:38:55'),
+(54, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 16:23:28'),
+(55, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-29 18:14:34'),
+(56, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-30 03:09:18'),
+(57, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-30 03:21:26'),
+(58, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-07-30 03:27:56'),
+(59, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 06:28:56'),
+(60, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 06:31:40'),
+(61, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:20:27'),
+(62, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:21:14'),
+(63, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:24:06'),
+(64, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:31:13'),
+(65, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:33:09'),
+(66, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:33:41'),
+(67, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:34:10'),
+(68, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 07:39:20'),
+(69, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 07:39:36'),
+(70, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:39:44'),
+(71, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:39:57'),
+(72, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:40:05'),
+(73, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:44:54'),
+(74, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:45:32'),
+(75, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:47:49'),
+(76, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:48:51'),
+(77, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:49:24'),
+(78, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:49:53'),
+(79, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 07:50:05'),
+(80, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:51:09'),
+(81, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:58:10'),
+(82, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 07:58:46'),
+(83, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 10:02:30'),
+(84, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 10:02:39'),
+(85, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:02:45'),
+(86, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:05:41'),
+(87, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:06:09'),
+(88, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:06:32'),
+(89, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:13:16'),
+(90, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 10:18:47'),
+(91, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 10:20:42'),
+(92, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 10:37:24'),
+(93, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 10:41:20'),
+(94, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 11:01:37'),
+(95, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 11:01:45'),
+(96, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 11:06:26'),
+(97, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 14:21:42'),
+(98, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 14:21:57'),
+(99, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 16:03:45'),
+(100, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 16:05:13'),
+(101, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 16:07:38'),
+(102, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 16:17:32'),
+(103, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 16:17:40'),
+(104, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 16:17:46'),
+(105, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 16:21:06'),
+(106, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 16:21:13'),
+(107, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 16:29:50'),
+(108, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-13 16:30:04'),
+(109, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 16:30:13'),
+(110, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 17:41:20'),
+(111, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 17:41:35'),
+(112, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 17:44:17'),
+(113, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 17:44:23'),
+(114, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 17:45:13'),
+(115, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-13 17:46:05'),
+(116, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-13 18:21:17'),
+(117, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 01:06:58'),
+(118, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 01:23:57'),
+(119, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-14 01:31:01'),
+(120, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 01:40:53'),
+(121, 3, NULL, 0x3a3a31, 'astuti30@gmail.com', '2017-12-14 01:42:00'),
+(122, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 01:45:29'),
+(123, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-14 01:51:55'),
+(124, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 02:51:32'),
+(125, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-14 05:00:36'),
+(126, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 05:04:40'),
+(127, 1, NULL, 0x3a3a31, 'admin@tecdiary.com', '2017-12-14 05:10:06'),
+(128, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 05:11:47'),
+(129, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 06:37:48'),
+(130, 2, NULL, 0x3a3a31, 'faturahman.ilham@gmail.com', '2017-12-14 06:39:47');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tec_combo_items`
+--
+ALTER TABLE `tec_combo_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_customers`
+--
+ALTER TABLE `tec_customers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_expenses`
+--
+ALTER TABLE `tec_expenses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_gift_cards`
+--
+ALTER TABLE `tec_gift_cards`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `card_no` (`card_no`);
+
+--
+-- Indexes for table `tec_groups`
+--
+ALTER TABLE `tec_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_login_attempts`
+--
+ALTER TABLE `tec_login_attempts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_payments`
+--
+ALTER TABLE `tec_payments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_printers`
+--
+ALTER TABLE `tec_printers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_products`
+--
+ALTER TABLE `tec_products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`);
+
+--
+-- Indexes for table `tec_product_store_qty`
+--
+ALTER TABLE `tec_product_store_qty`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `store_id` (`store_id`);
+
+--
+-- Indexes for table `tec_purchases`
+--
+ALTER TABLE `tec_purchases`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_purchase_items`
+--
+ALTER TABLE `tec_purchase_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_registers`
+--
+ALTER TABLE `tec_registers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_sales`
+--
+ALTER TABLE `tec_sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_sale_items`
+--
+ALTER TABLE `tec_sale_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_sessions`
+--
+ALTER TABLE `tec_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+
+--
+-- Indexes for table `tec_settings`
+--
+ALTER TABLE `tec_settings`
+  ADD PRIMARY KEY (`setting_id`);
+
+--
+-- Indexes for table `tec_stores`
+--
+ALTER TABLE `tec_stores`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_suppliers`
+--
+ALTER TABLE `tec_suppliers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tec_users`
+--
+ALTER TABLE `tec_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `group_id` (`group_id`);
+
+--
+-- Indexes for table `tec_user_logins`
+--
+ALTER TABLE `tec_user_logins`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tec_combo_items`
+--
+ALTER TABLE `tec_combo_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tec_customers`
+--
+ALTER TABLE `tec_customers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tec_expenses`
+--
+ALTER TABLE `tec_expenses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tec_gift_cards`
+--
+ALTER TABLE `tec_gift_cards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tec_groups`
+--
+ALTER TABLE `tec_groups`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tec_login_attempts`
+--
+ALTER TABLE `tec_login_attempts`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tec_payments`
+--
+ALTER TABLE `tec_payments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `tec_printers`
+--
+ALTER TABLE `tec_printers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tec_products`
+--
+ALTER TABLE `tec_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tec_product_store_qty`
+--
+ALTER TABLE `tec_product_store_qty`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `tec_purchases`
+--
+ALTER TABLE `tec_purchases`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tec_purchase_items`
+--
+ALTER TABLE `tec_purchase_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tec_registers`
+--
+ALTER TABLE `tec_registers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT for table `tec_sales`
+--
+ALTER TABLE `tec_sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `tec_sale_items`
+--
+ALTER TABLE `tec_sale_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `tec_stores`
+--
+ALTER TABLE `tec_stores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tec_suppliers`
+--
+ALTER TABLE `tec_suppliers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tec_users`
+--
+ALTER TABLE `tec_users`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `tec_user_logins`
+--
+ALTER TABLE `tec_user_logins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
